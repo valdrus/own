@@ -13,5 +13,10 @@
     "id": "ccf43bbf-6479-4d3b-9f8c-0e3717ef0a9e",
     "email": "test@test.com",
     "username": "valdrus"
+  },
+  "07326e4e-cff8-4ea9-b149-c945bcd8d34b": {
+    "id": "07326e4e-cff8-4ea9-b149-c945bcd8d34b",
+    "email": "test_2@mail.ru",
+    "username": "test"
   }
 }
