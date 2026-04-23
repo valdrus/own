@@ -1,7 +1,6 @@
 import { FC } from "react";
 import { Note } from "../../api/types";
 import "./NoteView.css";
-import { FetchUserView } from "../UserView/FetchUserView";
 
 const formatDate = (timestamp: number): string => {
   const date = new Date(timestamp);
@@ -21,8 +20,6 @@ interface NoteViewProps {
 export const NoteView: FC<NoteViewProps> = ({ note }) => {
   return (
     <div className="note-view">
-      <FetchUserView userId={note.userId} />
-
       <div className="note-view__head">
         <p className="note-view__datetime">{formatDate(note.createdAt)}</p>
         <p className="note-view__title">{note.text}</p>

@@ -30,8 +30,8 @@ async function validateResponse(response: Response): Promise<Response> {        
 
 export function fetchNoteList(): Promise<FetchNoteListResponse> {               // список заметок
   return fetch('/api/notes')
-    .then((response) => response.json())                                        // преобразуем к формату json
-    .then((data) => FetchNoteListSchema.parse(data))                            // проверяем что данные соответсвуют схеме валидации
+    .then((response) => response.json())                                        
+    .then((data) => FetchNoteListSchema.parse(data))                            
 }
 
 export function fetchUser(id: string): Promise<User> {                          // пользователь
@@ -39,11 +39,6 @@ export function fetchUser(id: string): Promise<User> {                          
     .then((response) => response.json())
     .then(validateResponse)
     .then((data) => UserSchema.parse(data))
-}
-
-export function fetchLogOut(): Promise<void> {                                 // выход
-  return fetch('/api/logout')
-    .then((response) => response.json())
 }
 
 export function createNote(title: string, text: string): Promise<void> {                      // создание заметки
