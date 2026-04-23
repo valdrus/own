@@ -7,13 +7,13 @@ import { login } from "../../api/auth";
 import { queryClient } from "../../api/qureyClient";
 
 export const LoginForm: FC = () => {
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
   const loginMutation = useMutation({
-    mutationFn: () => login(username, password),
+    mutationFn: () => login(email, password),
     onSuccess() {
-      queryClient.invalidateQueries({ queryKey: ["users", "me"] })
+      queryClient.invalidateQueries({ queryKey: ["users", "me"] })          // инвалидация, при успешном запросе функция с ключами указанными в скобках бдует вызвана снова
     }
   }, queryClient)
 
@@ -27,7 +27,7 @@ export const LoginForm: FC = () => {
     <form className="login-form" onSubmit={handleSubmit}>
 
       <FormField label="Email">
-        <input type="text" name="email" onChange={(event) => setUsername(event.target.value)} value={username} />
+        <input type="text" name="email" onChange={(event) => setEmail(event.target.value)} value={email} />
       </FormField>
 
       <FormField label="Пароль">

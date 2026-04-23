@@ -5,9 +5,10 @@ import { Loader } from "../Loader"
 import { NotesListView } from "./NotesListView"
 
 export const FetchNoteListView = () => {
+  
   const noteListQuery = useQuery({
     queryFn: () => fetchNoteList(),
-    queryKey: ['posts'],
+    queryKey: ['notes'],
   }, queryClient)
 
   switch (noteListQuery.status) {
