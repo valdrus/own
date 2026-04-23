@@ -1,37 +1,44 @@
 import { FormField } from "../FormField";
 import { Button } from "../Button";
-import "./NoteForm.css";
-import { FC, FormEventHandler, useState } from "react";
+import { FC } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { createNote } from "../../api/auth";
 import { queryClient } from "../../api/qureyClient";
+import { useForm } from "react-hook-form";
+import { CreateNoteForm, CreateNoteSchem } from "../../api/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import "./NoteForm.css";
 
-interface NoteFormProps {
 
-}
+interface NoteFormProps { }
+
+
 
 export const NoteForm: FC<NoteFormProps> = () => {
-  const [text, setText] = useState('')
-  const [title, setTitle] = useState('')
+
+  const { register, handleSubmit, formState: { errors } } = useForm<CreateNoteForm>({
+    resolver: zodResolver(CreateNoteSchem)
+  })
 
   const createNoteMutation = useMutation({
-    mutationFn: () => createNote(title, text)
+    mutationFn: createNote,
+    onSuccess() {
+      queryClient.invalidateQueries({ queryKey: ['notes'] })
+    },
   }, queryClient)
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault()
-
-    createNoteMutation.mutate()
-  }
-
   return (
-    <form className="note-form" onSubmit={handleSubmit}>
-      <FormField label="Заголовок">
-        <input type="text" value={title} onChange={(e) => setTitle(e.currentTarget.value)} />
+    <form className="note-form" onSubmit={handleSubmit(({ title, text }) => {
+      createNoteMutation.mutate(title, text)
+    })}>
+      <FormField label="Заголовок" errorMessage={errors.title?.message}>
+        <input type="text" {...register('title')} />
       </FormField>
-      <FormField label="Текст">
-        <textarea value={text} onChange={(e) => setText(e.currentTarget.value)} />
+
+      <FormField label="Текст" errorMessage={errors.text?.message}>
+        <textarea {...register('text')} />
       </FormField>
+
       <Button type="submit" title="Опубликовать" isLoading={createNoteMutation.isPending}>Сохранить</Button>
     </form>
   );

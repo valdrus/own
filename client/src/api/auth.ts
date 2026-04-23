@@ -30,13 +30,14 @@ async function validateResponse(response: Response): Promise<Response> {        
 
 export function fetchNoteList(): Promise<FetchNoteListResponse> {               // список заметок
   return fetch('/api/notes')
-    .then((response) => response.json())
-    .then((data) => FetchNoteListSchema.parse(data))
+    .then((response) => response.json())                                        // преобразуем к формату json
+    .then((data) => FetchNoteListSchema.parse(data))                            // проверяем что данные соответсвуют схеме валидации
 }
 
 export function fetchUser(id: string): Promise<User> {                          // пользователь
   return fetch(`/api/users/${id}`)
     .then((response) => response.json())
+    .then(validateResponse)
     .then((data) => UserSchema.parse(data))
 }
 
