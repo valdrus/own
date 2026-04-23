@@ -9,9 +9,7 @@ import { CreateNoteForm, CreateNoteSchem } from "../../api/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import "./NoteForm.css";
 
-
 interface NoteFormProps { }
-
 
 
 export const NoteForm: FC<NoteFormProps> = () => {
@@ -21,15 +19,15 @@ export const NoteForm: FC<NoteFormProps> = () => {
   })
 
   const createNoteMutation = useMutation({
-    mutationFn: createNote,
+    mutationFn: ({ title, text }: CreateNoteForm) => createNote(title, text),
     onSuccess() {
       queryClient.invalidateQueries({ queryKey: ['notes'] })
     },
   }, queryClient)
 
   return (
-    <form className="note-form" onSubmit={handleSubmit(({ title, text }) => {
-      createNoteMutation.mutate(title, text)
+    <form className="note-form" onSubmit={handleSubmit((data) => {
+      createNoteMutation.mutate(data)
     })}>
       <FormField label="Заголовок" errorMessage={errors.title?.message}>
         <input type="text" {...register('title')} />
